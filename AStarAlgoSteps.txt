@@ -1,0 +1,7 @@
+-making a canvas X
+-making a grid on the canvas
+-making grid with color on selected square
+-making a simple distance calculator between square (without obstacle)
+-putting color between two square (without obstacle)
+-animating the new squares (without obstacle)
+-making the same with obstacle (3 last steps)
