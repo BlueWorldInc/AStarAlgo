@@ -1,8 +1,22 @@
 var c = document.getElementById("CanvasAS");
 var ctx = c.getContext("2d");
+
+var squares = { 
+    lastSquare: { 
+        x: 0,//5,
+        y: 0//7
+    }, currentSquare: {
+        x: 0,//8,
+        y: 0//2
+    }  
+}
+
 // drawLine();
 gridDrawer();
+getDistanceX();
 // colorSquare(5, 5);
+
+
 
 function drawLineVertical(x) {
     ctx.beginPath();
@@ -30,6 +44,11 @@ function colorSquare(x, y) {
     // console.log(x + " " + y);
     ctx.fillRect((x * 20), (y * 20), 20, 20);
     ctx.stroke();
+    squares.lastSquare.x = squares.currentSquare.x;
+    squares.lastSquare.y = squares.currentSquare.y;
+    squares.currentSquare.x = x;
+    squares.currentSquare.y = y;
+    getDistanceX();
 }
 
 function colorSelectedSquareOnClick() {
@@ -42,4 +61,24 @@ function colorSelectedSquareOnClick() {
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function getDistanceX() {
+    var d = 0;
+    var sl = squares.lastSquare;
+    var sc = squares.currentSquare;
+    if (sl.x === sc.x && sl.y === sc.y) {
+        d = 0;
+    } else if (sl.x !== sc.x && sl.y === sc.y) {
+        d = Math.abs(sl.x - sc.x) * 10;
+    } else if (sl.x === sc.x && sl.y !== sc.y) {
+        d = Math.abs(sl.y - sc.y) * 10;
+    } else if (sl.x !== sc.x && sl.y !== sc.y) {
+        xOffset = Math.abs(sl.x - sc.x);
+        yOffset = Math.abs(sl.y - sc.y);
+        min = Math.min(xOffset, yOffset);
+        diff = Math.abs(xOffset - yOffset);
+        d = min * 14 + diff * 10;
+    }
+    document.getElementById("dist").innerHTML = d;
 }
