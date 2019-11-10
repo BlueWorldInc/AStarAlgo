@@ -1,0 +1,50 @@
+Same x or same y: abs x or abs y
+X and Y is superior (top right):
+X is superior and Y is inferior (bot left):
+diff (x) and diff(y) (abs diff)
+take diff x and diff y -> 14 (diagonal)
+diff x - diff y -> 10 (horizontal or vertical)
+
+if (X1, Y1, X2, Y2) {
+
+  if (x1 == x2 and y1 == y2) {
+	d = 0;
+} 
+  if (x1 != x2 and y1 == y2) {
+	d = abs(x1-x2);
+} 
+  if (x1 == x2 and y1 != y2) {
+	d = abs(y1-y2);
+}
+
+  if (x1 != x2 and y1 != y2) {
+	xOffset = abs(x1-x2)
+	yOffset = abs(y1-y2)
+        min = min(xOffset, yOffset)
+	ecart = abs(xOffset, yOffset)
+	d += min * 14 + ecart * 10;
+}
+
+5,4
+10,5
+
+xOffset = 5
+yOffset = 1
+1*14+4*10 = 54 OK
+
+5,4
+2,1
+
+xOffset = 3
+yOffset = 3
+3*14 = 42 OK
+
+5,4
+2,3
+
+xOffset = 3
+yOffset = 1
+1*14 + 2 * 10 = 34 OK
+
+
+}

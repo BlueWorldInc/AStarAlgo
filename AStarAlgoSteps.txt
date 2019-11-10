@@ -1,7 +1,8 @@
 -making a canvas X
--making a grid on the canvas
--making grid with color on selected square
--making a simple distance calculator between square (without obstacle)
--putting color between two square (without obstacle)
--animating the new squares (without obstacle)
+-making a grid on the canvas X
+-making grid with color on selected square X
+-making a simple distance calculator between square (without obstacle) X
+-putting color between two square (without obstacle) X
+-animating the new squares (without obstacle) X
+-refactor the code (especialy the squarecolor code)
 -making the same with obstacle (3 last steps)
