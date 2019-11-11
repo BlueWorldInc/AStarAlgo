@@ -3,14 +3,13 @@ var ctx = c.getContext("2d");
 
 var squares = {
     lastSquare: {
-        x: 0,//5,
-        y: 0//7
+        x: 0,
+        y: 0
     }, currentSquare: {
-        x: 0,//8,
-        y: 0//2
+        x: 0,
+        y: 0
     }
 }
-
 
 var directions = {
     directLineDirection: {
@@ -22,11 +21,8 @@ var directions = {
     }
 }
 
-// drawLine();
 gridDrawer();
 getDistanceX();
-// colorSquare(5, 5);
-
 
 
 function drawLineVertical(x) {
@@ -47,13 +43,11 @@ async function gridDrawer() {
     for (var i = 0; i < 20; i++) {
         drawLineVertical(i);
         drawLineHorizontal(i);
-        // await sleep(1);
     }
 }
 
 function colorSquare(x, y, color) {
     ctx.fillStyle = color;
-    // console.log(x + " " + y);
     ctx.fillRect((x * 20), (y * 20), 20, 20);
     ctx.stroke();
 }
@@ -64,12 +58,12 @@ function colorSelectedSquareOnClick() {
     var y = event.clientY - Math.round(rect.top);
     if (x >= 400) { x = 399;}
     if (y >= 200) { y = 199;}
-    // console.log("On Click" + x + " " + y + " Floor : " + Math.floor(x / 20) + " " +  Math.floor(y / 20));
-    // clear canvas
+    //clear canvas
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, 400, 200);
     gridDrawer();
     ctx.stroke();
+    //redraw canvas
     colorSquare(Math.floor(x / 20), Math.floor(y / 20), "black");
     updateSquares(Math.floor(x / 20), Math.floor(y / 20));
     getDistanceX();
@@ -134,20 +128,6 @@ async function colorIntermediary() {
         }
 
         if (directLineNumber > 0) {
-            // if ((yOffset + xOffset) > 0) {
-            //     dld.y = -1;
-            //     dld.x = 0;
-            // } else if (-yOffset + xOffset > 0) {
-            //     dld.y = 1;
-            //     dld.x = 0;
-            // } else if (xOffset <= 0) {
-            //     dld.x = 1;
-            //     dld.y = 0;
-            // } else {
-            //     dld.x = -1;
-            //     dld.y = 0;
-            // }
-
             if (xOffset < 0 && yOffset > 0) {
                 if (xOffset + yOffset > 0) {
                     dld.y = -1;
@@ -187,7 +167,6 @@ async function colorIntermediary() {
                     dld.y = 0;
                 }
             }
-
         }
 
         IS.x = sl.x;
@@ -198,21 +177,16 @@ async function colorIntermediary() {
             if (i == diagonalNumber && directLineNumber == 0) {
                 break;
             }
-            // console.log("diagonalNumber : " + diagonalNumber);
             await sleep(50);
             IS.x -= dd.d1;
             IS.y -= dd.d0;
-            // colorSquare(sl.x - (dd.d1 * i), sl.y - (dd.d0 * i));
             colorSquare(IS.x, IS.y, "red");
         }
         
         for (var i = 1; i < directLineNumber; i++) {
-            // console.log("directLineNumber : " + directLineNumber + ", dld.x " + dld.x + ", dld.y " + dld.y );
-            // console.log("sl : " + sl.x + " " + sl.y + ", sc " + sc.x + " " + sc.y);
             await sleep(50);
             IS.x += dld.x;
             IS.y += dld.y;
-            // colorSquare(sl.x + (dld.x * i), sl.y + (dld.y * i));
             colorSquare(IS.x, IS.y, "red");
         }
     }
