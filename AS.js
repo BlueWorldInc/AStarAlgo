@@ -21,7 +21,7 @@ var directions = {
     }
 }
 
-// var surfaces = [[0,0,"normal"],[0,2,"normal"]];
+var surfaces = [[0, 0, "normal"], [0, 2, "water"]];
 
 var surfaceType = "normal";
 
@@ -56,6 +56,32 @@ function colorSquare(x, y, color) {
     ctx.stroke();
 }
 
+async function drawSurface() {
+    for (var i = 0; i < surfaces.length; i++) {
+        if (surfaces[i][2] != "intermediary") {
+            ctx.fillStyle = colorOfSurfaces(surfaces[i][2]);
+            ctx.fillRect((surfaces[i][0] * 20), (surfaces[i][1] * 20), 20, 20);
+        }
+    }
+    ctx.stroke();
+    for (var i = 0; i < surfaces.length; i++) {
+        if (surfaces[i][2] == "intermediary") {
+            await sleep(50);
+            ctx.fillStyle = colorOfSurfaces(surfaces[i][2]);
+            ctx.fillRect((surfaces[i][0] * 20), (surfaces[i][1] * 20), 20, 20);
+        }
+    }
+}
+
+function clearSurface() {
+    for (var i = 0; i < surfaces.length; i++) {
+        if (surfaces[i][2] == "normal" || surfaces[i][2] == "intermediary") {
+            surfaces.splice(i, 1);
+            i--;
+        }
+    }
+}
+
 function colorSelectedSquareOnClick() {
     var rect = c.getBoundingClientRect();
     var x = event.clientX - Math.round(rect.left);
@@ -65,14 +91,19 @@ function colorSelectedSquareOnClick() {
     //clear canvas
     ctx.fillStyle = "white";
     ctx.fillRect(0, 0, 400, 200);
+    clearSurface();
     gridDrawer();
     ctx.stroke();
     //redraw canvas
-    colorSquare(Math.floor(x / 20), Math.floor(y / 20), "black");
+    surfaces.push([Math.floor(x / 20), Math.floor(y / 20), "normal"]);
+    // colorSquare(Math.floor(x / 20), Math.floor(y / 20), "black");
     updateSquares(Math.floor(x / 20), Math.floor(y / 20));
     getDistanceX();
-    colorSquare(squares.lastSquare.x, squares.lastSquare.y, "black");
+    surfaces.push([squares.lastSquare.x, squares.lastSquare.y, "normal"]);
+    // colorSquare(squares.lastSquare.x, squares.lastSquare.y, "black");
+    console.log(surfaces);
     colorIntermediary();
+    drawSurface();
 }
 
 function updateSquares(x, y) {
@@ -99,14 +130,16 @@ async function colorIntermediary() {
     if (sl.x !== sc.x && sl.y === sc.y) {
         diff = sl.x - sc.x;
         for (var i = 1; i < Math.abs(diff); i++) {
-            await sleep(50);
-            colorSquare((sl.x - (Math.sign(diff) * i)), sl.y, "red");
+            // await sleep(50);
+            surfaces.push([(sl.x - (Math.sign(diff) * i)), sl.y, "intermediary"]);
+            // colorSquare((sl.x - (Math.sign(diff) * i)), sl.y, "red");
         }
     } else if (sl.x === sc.x && sl.y !== sc.y) {
         diff = sl.y - sc.y;
         for (var i = 1; i < Math.abs(diff); i++) {
-            await sleep(50);
-            colorSquare(sl.x, sl.y - (Math.sign(diff) * i), "red");
+            // await sleep(50);
+            surfaces.push([sl.x, sl.y - (Math.sign(diff) * i), "intermediary"]);
+            // colorSquare(sl.x, sl.y - (Math.sign(diff) * i), "red");
         }
     } else
         if (sl.x !== sc.x && sl.y !== sc.y) {
@@ -181,17 +214,19 @@ async function colorIntermediary() {
                 if (i == diagonalNumber && directLineNumber == 0) {
                     break;
                 }
-                await sleep(50);
+                // await sleep(50);
                 IS.x -= dd.d1;
                 IS.y -= dd.d0;
-                colorSquare(IS.x, IS.y, "red");
+                surfaces.push([IS.x, IS.y, "intermediary"]);
+                // colorSquare(IS.x, IS.y, "red");
             }
 
             for (var i = 1; i < directLineNumber; i++) {
-                await sleep(50);
+                // await sleep(50);
                 IS.x += dld.x;
                 IS.y += dld.y;
-                colorSquare(IS.x, IS.y, "red");
+                surfaces.push([IS.x, IS.y, "intermediary"]);
+                // colorSquare(IS.x, IS.y, "red");
             }
         }
 }
@@ -228,11 +263,23 @@ function colorOfSurface() {
     if (this.surfaceType == "normal") {
         return "black";
     } else if (this.surfaceType == "intermediary") {
-    return "red";
+        return "red";
     } else if (this.surfaceType == "water") {
-    return "blue";
+        return "blue";
     } else if (this.surfaceType == "obstacle") {
-    return "grey";
+        return "grey";
+    }
+}
+
+function colorOfSurfaces(s) {
+    if (s == "normal") {
+        return "black";
+    } else if (s == "intermediary") {
+        return "red";
+    } else if (s == "water") {
+        return "blue";
+    } else if (s == "obstacle") {
+        return "grey";
     }
 }
 
