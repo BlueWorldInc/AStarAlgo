@@ -4,5 +4,7 @@
 -making a simple distance calculator between square (without obstacle) X
 -putting color between two square (without obstacle) X
 -animating the new squares (without obstacle) X
--refactor the code (especialy the squarecolor code)
+-refactor the code (especialy the squarecolor code) X
+-change the surfaceType name to a more meaningfull name
+-change the colorSquareonclick function to have only call to other function
 -making the same with obstacle (3 last steps)

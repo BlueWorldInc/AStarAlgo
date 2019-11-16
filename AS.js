@@ -73,9 +73,26 @@ async function drawSurface() {
     }
 }
 
+function clearCanvas() {
+    ctx.fillStyle = "white";
+    ctx.fillRect(0, 0, 400, 200);
+    clearSurface();
+    gridDrawer();
+    ctx.stroke();
+}
+
 function clearSurface() {
     for (var i = 0; i < surfaces.length; i++) {
         if (surfaces[i][2] == "normal" || surfaces[i][2] == "intermediary") {
+            surfaces.splice(i, 1);
+            i--;
+        }
+    }
+}
+
+function clearSquare(x, y) {
+    for (var i = 0; i < surfaces.length; i++) {
+        if (surfaces[i][0] == x && surfaces[i][1] == y) {
             surfaces.splice(i, 1);
             i--;
         }
@@ -89,20 +106,22 @@ function colorSelectedSquareOnClick() {
     if (x >= 400) { x = 399; }
     if (y >= 200) { y = 199; }
     //clear canvas
-    ctx.fillStyle = "white";
-    ctx.fillRect(0, 0, 400, 200);
-    clearSurface();
-    gridDrawer();
-    ctx.stroke();
+    clearCanvas();
     //redraw canvas
-    surfaces.push([Math.floor(x / 20), Math.floor(y / 20), "normal"]);
-    // colorSquare(Math.floor(x / 20), Math.floor(y / 20), "black");
-    updateSquares(Math.floor(x / 20), Math.floor(y / 20));
-    getDistanceX();
-    surfaces.push([squares.lastSquare.x, squares.lastSquare.y, "normal"]);
-    // colorSquare(squares.lastSquare.x, squares.lastSquare.y, "black");
-    console.log(surfaces);
-    colorIntermediary();
+    if (this.surfaceType == "normal") {
+        surfaces.push([Math.floor(x / 20), Math.floor(y / 20), "normal"]);
+        // colorSquare(Math.floor(x / 20), Math.floor(y / 20), "black");
+        updateSquares(Math.floor(x / 20), Math.floor(y / 20));
+        getDistanceX();
+        surfaces.push([squares.lastSquare.x, squares.lastSquare.y, "normal"]);
+        // colorSquare(squares.lastSquare.x, squares.lastSquare.y, "black");
+        // console.log(surfaces);
+        colorIntermediary();
+    } else if (this.surfaceType == "clear") {
+        clearSquare(Math.floor(x / 20), Math.floor(y / 20));
+    } else {
+        surfaces.push([Math.floor(x / 20), Math.floor(y / 20), this.surfaceType]);
+    }
     drawSurface();
 }
 
