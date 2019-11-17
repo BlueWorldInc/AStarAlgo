@@ -21,7 +21,8 @@ var directions = {
     }
 }
 
-var surfaces = [[0, 0, "normal"], [0, 2, "water"]];
+// var surfaces = [[0, 0, "normal"], [0, 2, "water"]];
+var surfaces = [[]];
 
 var surfaceType = "normal";
 
@@ -116,7 +117,12 @@ function colorSelectedSquareOnClick() {
         surfaces.push([squares.lastSquare.x, squares.lastSquare.y, "normal"]);
         // colorSquare(squares.lastSquare.x, squares.lastSquare.y, "black");
         // console.log(surfaces);
+        console.log("***********************************************************");
+        // console.log("Distance to the start " + getDistanceToStart(surfaces[0]));
+        // console.log("Distance to the end " + getDistanceToEnd(surfaces[0]));
         colorIntermediary();
+        colorPath();
+        findPath();
     } else if (this.surfaceType == "clear") {
         clearSquare(Math.floor(x / 20), Math.floor(y / 20));
     } else {
@@ -250,6 +256,73 @@ async function colorIntermediary() {
         }
 }
 
+function colorPath() {
+    for (var i = 0; i < surfaces.length; i++) {
+        if (surfaces[i][2] == "intermediary") {
+            // console.log(i);
+            // console.log("Distance to the start " + getDistanceToStart(surfaces[i]));
+            // console.log("Distance to the end " + getDistanceToEnd(surfaces[i]));
+            // console.log("Distance Total " + getDistanceTotal(surfaces[i]));
+        }
+    }
+}
+
+function findPath() {
+    // coord, distance and type: 6
+    var sc = squares.lastSquare;
+    var squareList = getNeighbord(sc);
+    var distanceList = [];
+    for (var i = 0; i < squareList.length; i++) {
+        console.log("Square " + squareList[i]);
+        console.log("Distance Total " + getDistanceTotal(squareList[i]));
+        distanceList.push(getDistanceTotal(squareList[i]));
+    }
+    console.log(distanceList);
+    console.log("min : " + getMin(distanceList));
+    console.log("index : " + getMinIndex(distanceList));
+    // check squares neighbord and their total distance 
+    // if it is not an obstacle
+    // go to the smallest total distance neighbord
+    // update the distance value of every node
+    //if all have higer value than the other node from the first he go back to the first
+    // until he reach the endpoint
+}
+
+function getMinIndex(arrayToCheck) {
+    var minValue = arrayToCheck[0];
+    var minValueIndex = 0;
+    for (var i = 1; i < arrayToCheck.length; i++) {
+        if (arrayToCheck[i] < minValue) {
+            minValue = arrayToCheck[i];
+            minValueIndex = i;
+        }
+    }
+    return minValueIndex;
+}
+
+function getMin(arrayToCheck) {
+    var minValue = arrayToCheck[0];
+    for (var i = 1; i < arrayToCheck.length; i++) {
+        if (arrayToCheck[i] < minValue) {
+            minValue = arrayToCheck[i];
+        }
+    }
+    return minValue;
+}
+
+function getNeighbord(s) {
+    var squareList = [];
+    squareList.push([s.x-1,s.y-1]);
+    squareList.push([s.x,s.y-1]);
+    squareList.push([s.x+1,s.y-1]);
+    squareList.push([s.x-1,s.y]);
+    squareList.push([s.x+1,s.y]);
+    squareList.push([s.x-1,s.y+1]);
+    squareList.push([s.x,s.y+1]);
+    squareList.push([s.x+1,s.y+1]);
+    return (squareList);
+}
+
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
@@ -272,6 +345,57 @@ function getDistanceX() {
         d = min * 14 + diff * 10;
     }
     document.getElementById("dist").innerHTML = d;
+}
+
+function getDistanceToStart(intermediarySquare) {
+    var d = 0;
+    var sl = squares.lastSquare;
+    var sc = { 
+        x : intermediarySquare[0], 
+        y : intermediarySquare[1] 
+    };
+    if (sl.x === sc.x && sl.y === sc.y) {
+        d = 0;
+    } else if (sl.x !== sc.x && sl.y === sc.y) {
+        d = Math.abs(sl.x - sc.x) * 10;
+    } else if (sl.x === sc.x && sl.y !== sc.y) {
+        d = Math.abs(sl.y - sc.y) * 10;
+    } else if (sl.x !== sc.x && sl.y !== sc.y) {
+        xOffset = Math.abs(sl.x - sc.x);
+        yOffset = Math.abs(sl.y - sc.y);
+        min = Math.min(xOffset, yOffset);
+        diff = Math.abs(xOffset - yOffset);
+        d = min * 14 + diff * 10;
+    }
+    return (d);
+}
+
+function getDistanceToEnd(intermediarySquare) {
+    var d = 0;
+    var sl = squares.currentSquare;
+    var sc = { 
+        x : intermediarySquare[0], 
+        y : intermediarySquare[1] 
+    };
+    if (sl.x === sc.x && sl.y === sc.y) {
+        d = 0;
+    } else if (sl.x !== sc.x && sl.y === sc.y) {
+        d = Math.abs(sl.x - sc.x) * 10;
+    } else if (sl.x === sc.x && sl.y !== sc.y) {
+        d = Math.abs(sl.y - sc.y) * 10;
+    } else if (sl.x !== sc.x && sl.y !== sc.y) {
+        xOffset = Math.abs(sl.x - sc.x);
+        yOffset = Math.abs(sl.y - sc.y);
+        min = Math.min(xOffset, yOffset);
+        diff = Math.abs(xOffset - yOffset);
+        d = min * 14 + diff * 10;
+    }
+    return (d);
+}
+
+function getDistanceTotal(intermediarySquare) {
+    return (getDistanceToStart(intermediarySquare) + 
+    getDistanceToEnd(intermediarySquare));
 }
 
 function changeSurface(surfaceType) {
