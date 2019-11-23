@@ -259,6 +259,7 @@ async function colorIntermediary() {
 function colorPath() {
     for (var i = 0; i < surfaces.length; i++) {
         if (surfaces[i][2] == "intermediary") {
+            colorSquare(surfaces[i][0],surfaces[i][1]);
             // console.log(i);
             // console.log("Distance to the start " + getDistanceToStart(surfaces[i]));
             // console.log("Distance to the end " + getDistanceToEnd(surfaces[i]));
@@ -270,16 +271,51 @@ function colorPath() {
 function findPath() {
     // coord, distance and type: 6
     var sc = squares.lastSquare;
+    var actualSquare = {
+        x: squares.lastSquare.x,
+        y: squares.lastSquare.y
+    }
     var squareList = getNeighbord(sc);
     var distanceList = [];
-    for (var i = 0; i < squareList.length; i++) {
-        console.log("Square " + squareList[i]);
-        console.log("Distance Total " + getDistanceTotal(squareList[i]));
-        distanceList.push(getDistanceTotal(squareList[i]));
+    t = 0;
+    while (actualSquare != squares.currentSquare && t < 20) {
+        console.log("****************Touring*****************" + t + "**************");
+        for (var i = 0; i < squareList.length; i++) {
+            // distanceList.push(getDistanceTotal(squareList[i]));
+            distanceList.push(getDistanceToEnd(squareList[i]));
+        }
+        // console.log(getMinIndex(distanceList));
+        // console.log(squareList[getMinIndex(distanceList)][0]);
+        if(t != 0) {
+            surfaces.push([actualSquare.x, actualSquare.y, "intermediary"]);
+        }
+        actualSquare.x = squareList[getMinIndex(distanceList)][0];
+        actualSquare.y = squareList[getMinIndex(distanceList)][1];
+        if (squares.currentSquare.x === actualSquare.x && 
+            squares.currentSquare.y === actualSquare.y) {
+            console.log("yaayayaay c'est bon");
+            break;
+        }
+        console.log(distanceList);
+        console.log(squareList);
+        // console.log(actualSquare);
+        // console.log(squares.currentSquare);
+        var distanceList = [];
+        var squareList = getNeighbord(actualSquare);
+        t++;
     }
-    console.log(distanceList);
-    console.log("min : " + getMin(distanceList));
-    console.log("index : " + getMinIndex(distanceList));
+
+
+    // for (var i = 0; i < squareList.length; i++) {
+    //     console.log("Square " + squareList[i]);
+    //     console.log("Distance Total " + getDistanceTotal(squareList[i]));
+    //     distanceList.push(getDistanceTotal(squareList[i]));
+    // }
+    // console.log("min : " + getMin(distanceList));
+    // console.log("index : " + getMinIndex(distanceList));
+
+
+
     // check squares neighbord and their total distance 
     // if it is not an obstacle
     // go to the smallest total distance neighbord
@@ -287,6 +323,12 @@ function findPath() {
     //if all have higer value than the other node from the first he go back to the first
     // until he reach the endpoint
 }
+
+
+//calculate all v of first
+//go to the lowest
+//calculate all v of this
+//go to the lowest
 
 function getNeighbord(s) {
     var squareList = [];
