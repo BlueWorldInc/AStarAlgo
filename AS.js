@@ -120,7 +120,7 @@ function colorSelectedSquareOnClick() {
         console.log("***********************************************************");
         // console.log("Distance to the start " + getDistanceToStart(surfaces[0]));
         // console.log("Distance to the end " + getDistanceToEnd(surfaces[0]));
-        colorIntermediary();
+        //colorIntermediary();
         colorPath();
         findPath();
     } else if (this.surfaceType == "clear") {
@@ -288,6 +288,62 @@ function findPath() {
     // until he reach the endpoint
 }
 
+function getNeighbord(s) {
+    var squareList = [];
+    if (s.x - 1 >= 0 && s.y - 1 >= 0) {
+        if (!isSurfaceAnObstacle(s.x - 1, s.y - 1)) {
+            squareList.push([s.x - 1, s.y - 1]);
+        }
+    }
+    if (s.y - 1 >= 0) {
+        if (!isSurfaceAnObstacle(s.x, s.y - 1)) {
+            squareList.push([s.x, s.y - 1]);
+        }
+    }
+    if (s.x + 1 <= 19 && s.y - 1 >= 0) {
+        if (!isSurfaceAnObstacle(s.x + 1, s.y - 1)) {
+            squareList.push([s.x + 1, s.y - 1]);
+        }
+    }
+    if (s.x - 1 >= 0) {
+        if (!isSurfaceAnObstacle(s.x - 1, s.y)) {
+            squareList.push([s.x - 1, s.y]);
+        }
+    }
+    if (s.x + 1 <= 19) {
+        if (!isSurfaceAnObstacle(s.x + 1, s.y)) {
+            squareList.push([s.x + 1, s.y]);
+        }
+    }
+    if (s.x - 1 >= 0 && s.y + 1 <= 19) {
+        if (!isSurfaceAnObstacle(s.x - 1, s.y + 1)) {
+            squareList.push([s.x - 1, s.y + 1]);
+        }
+    }
+    if (s.y + 1 <= 19) {
+        if (!isSurfaceAnObstacle(s.x, s.y + 1)) {
+            squareList.push([s.x, s.y + 1]);
+        }
+    }
+    if (s.x + 1 <= 19 && s.y + 1 <= 19) {
+        if (!isSurfaceAnObstacle(s.x + 1, s.y + 1)) {
+            squareList.push([s.x + 1, s.y + 1]);
+        }
+    }
+    return (squareList);
+}
+
+function isSurfaceAnObstacle(x, y) {
+    for (var i = 0; i < surfaces.length; i++) {
+        if (surfaces[i][2] === "obstacle") {
+            if (surfaces[i][0] === x && surfaces[i][1] === y) {
+                return true;
+            }
+        }
+    }
+    return false;
+}
+
 function getMinIndex(arrayToCheck) {
     var minValue = arrayToCheck[0];
     var minValueIndex = 0;
@@ -310,18 +366,6 @@ function getMin(arrayToCheck) {
     return minValue;
 }
 
-function getNeighbord(s) {
-    var squareList = [];
-    squareList.push([s.x-1,s.y-1]);
-    squareList.push([s.x,s.y-1]);
-    squareList.push([s.x+1,s.y-1]);
-    squareList.push([s.x-1,s.y]);
-    squareList.push([s.x+1,s.y]);
-    squareList.push([s.x-1,s.y+1]);
-    squareList.push([s.x,s.y+1]);
-    squareList.push([s.x+1,s.y+1]);
-    return (squareList);
-}
 
 function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
@@ -350,9 +394,9 @@ function getDistanceX() {
 function getDistanceToStart(intermediarySquare) {
     var d = 0;
     var sl = squares.lastSquare;
-    var sc = { 
-        x : intermediarySquare[0], 
-        y : intermediarySquare[1] 
+    var sc = {
+        x: intermediarySquare[0],
+        y: intermediarySquare[1]
     };
     if (sl.x === sc.x && sl.y === sc.y) {
         d = 0;
@@ -373,9 +417,9 @@ function getDistanceToStart(intermediarySquare) {
 function getDistanceToEnd(intermediarySquare) {
     var d = 0;
     var sl = squares.currentSquare;
-    var sc = { 
-        x : intermediarySquare[0], 
-        y : intermediarySquare[1] 
+    var sc = {
+        x: intermediarySquare[0],
+        y: intermediarySquare[1]
     };
     if (sl.x === sc.x && sl.y === sc.y) {
         d = 0;
@@ -394,8 +438,8 @@ function getDistanceToEnd(intermediarySquare) {
 }
 
 function getDistanceTotal(intermediarySquare) {
-    return (getDistanceToStart(intermediarySquare) + 
-    getDistanceToEnd(intermediarySquare));
+    return (getDistanceToStart(intermediarySquare) +
+        getDistanceToEnd(intermediarySquare));
 }
 
 function changeSurface(surfaceType) {
