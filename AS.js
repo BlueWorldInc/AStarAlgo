@@ -290,42 +290,42 @@ function findPath() {
 
 function getNeighbord(s) {
     var squareList = [];
-    if (s.x - 1 >= 0 && s.y - 1 >= 0) {
+    if (isInsideTheGrid(s.x - 1, s.y - 1)) {
         if (!isSurfaceAnObstacle(s.x - 1, s.y - 1)) {
             squareList.push([s.x - 1, s.y - 1]);
         }
     }
-    if (s.y - 1 >= 0) {
+    if (isInsideTheGrid(s.x, s.y - 1)) {
         if (!isSurfaceAnObstacle(s.x, s.y - 1)) {
             squareList.push([s.x, s.y - 1]);
         }
     }
-    if (s.x + 1 <= 19 && s.y - 1 >= 0) {
+    if (isInsideTheGrid(s.x + 1, s.y - 1)) {
         if (!isSurfaceAnObstacle(s.x + 1, s.y - 1)) {
             squareList.push([s.x + 1, s.y - 1]);
         }
     }
-    if (s.x - 1 >= 0) {
+    if (isInsideTheGrid(s.x - 1, s.y)) {
         if (!isSurfaceAnObstacle(s.x - 1, s.y)) {
             squareList.push([s.x - 1, s.y]);
         }
     }
-    if (s.x + 1 <= 19) {
+    if (isInsideTheGrid(s.x + 1, s.y)) {
         if (!isSurfaceAnObstacle(s.x + 1, s.y)) {
             squareList.push([s.x + 1, s.y]);
         }
     }
-    if (s.x - 1 >= 0 && s.y + 1 <= 19) {
+    if (isInsideTheGrid(s.x - 1, s.y + 1)) {
         if (!isSurfaceAnObstacle(s.x - 1, s.y + 1)) {
             squareList.push([s.x - 1, s.y + 1]);
         }
     }
-    if (s.y + 1 <= 19) {
+    if (isInsideTheGrid(s.x, s.y + 1)) {
         if (!isSurfaceAnObstacle(s.x, s.y + 1)) {
             squareList.push([s.x, s.y + 1]);
         }
     }
-    if (s.x + 1 <= 19 && s.y + 1 <= 19) {
+    if (isInsideTheGrid(s.x + 1, s.y + 1)) {
         if (!isSurfaceAnObstacle(s.x + 1, s.y + 1)) {
             squareList.push([s.x + 1, s.y + 1]);
         }
@@ -340,6 +340,13 @@ function isSurfaceAnObstacle(x, y) {
                 return true;
             }
         }
+    }
+    return false;
+}
+
+function isInsideTheGrid(x, y) {
+    if ((x >= 0 && x <= 19) && (y >= 0 && y <= 19)) {
+        return true;
     }
     return false;
 }
