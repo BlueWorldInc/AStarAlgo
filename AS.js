@@ -259,7 +259,7 @@ async function colorIntermediary() {
 function colorPath() {
     for (var i = 0; i < surfaces.length; i++) {
         if (surfaces[i][2] == "intermediary") {
-            colorSquare(surfaces[i][0],surfaces[i][1]);
+            colorSquare(surfaces[i][0], surfaces[i][1]);
             // console.log(i);
             // console.log("Distance to the start " + getDistanceToStart(surfaces[i]));
             // console.log("Distance to the end " + getDistanceToEnd(surfaces[i]));
@@ -276,22 +276,23 @@ function findPath() {
         y: squares.lastSquare.y
     }
     var squareList = getNeighbord(sc);
-    var distanceList = [];
+    // var distanceList = [];
     t = 0;
     while (actualSquare != squares.currentSquare && t < 20) {
         console.log("****************Touring*****************" + t + "**************");
-        for (var i = 0; i < squareList.length; i++) {
-            // distanceList.push(getDistanceTotal(squareList[i]));
-            distanceList.push(getDistanceToEnd(squareList[i]));
-        }
+        // for (var i = 0; i < squareList.length; i++) {
+        //     // distanceList.push(getDistanceTotal(squareList[i]));
+        //     distanceList.push(getDistanceToEnd(squareList[i]));
+        // }
         // console.log(getMinIndex(distanceList));
         // console.log(squareList[getMinIndex(distanceList)][0]);
-        if(t != 0) {
+        if (t != 0) {
             surfaces.push([actualSquare.x, actualSquare.y, "intermediary"]);
         }
-        actualSquare.x = squareList[getMinIndex(distanceList)][0];
-        actualSquare.y = squareList[getMinIndex(distanceList)][1];
-        if (squares.currentSquare.x === actualSquare.x && 
+        console.log(getMinIndex(squareList));
+        actualSquare.x = squareList[getMinIndex(squareList)][0];
+        actualSquare.y = squareList[getMinIndex(squareList)][1];
+        if (squares.currentSquare.x === actualSquare.x &&
             squares.currentSquare.y === actualSquare.y) {
             console.log("yaayayaay c'est bon");
             break;
@@ -305,7 +306,6 @@ function findPath() {
         t++;
     }
 
-
     // for (var i = 0; i < squareList.length; i++) {
     //     console.log("Square " + squareList[i]);
     //     console.log("Distance Total " + getDistanceTotal(squareList[i]));
@@ -314,14 +314,6 @@ function findPath() {
     // console.log("min : " + getMin(distanceList));
     // console.log("index : " + getMinIndex(distanceList));
 
-
-
-    // check squares neighbord and their total distance 
-    // if it is not an obstacle
-    // go to the smallest total distance neighbord
-    // update the distance value of every node
-    //if all have higer value than the other node from the first he go back to the first
-    // until he reach the endpoint
 }
 
 
@@ -372,7 +364,16 @@ function getNeighbord(s) {
             squareList.push([s.x + 1, s.y + 1]);
         }
     }
+    getAllInfo(squareList);
     return (squareList);
+}
+
+function getAllInfo(squareList) {
+    for (var i = 0; i < squareList.length; i++) {
+        squareList[i].push(getDistanceToStart(squareList[i]));
+        squareList[i].push(getDistanceToEnd(squareList[i]));
+        squareList[i].push(getDistanceTotal(squareList[i]));
+    }
 }
 
 function isSurfaceAnObstacle(x, y) {
@@ -394,11 +395,11 @@ function isInsideTheGrid(x, y) {
 }
 
 function getMinIndex(arrayToCheck) {
-    var minValue = arrayToCheck[0];
+    var minValue = arrayToCheck[0][3];
     var minValueIndex = 0;
     for (var i = 1; i < arrayToCheck.length; i++) {
-        if (arrayToCheck[i] < minValue) {
-            minValue = arrayToCheck[i];
+        if (arrayToCheck[i][3] < minValue) {
+            minValue = arrayToCheck[i][3];
             minValueIndex = i;
         }
     }
