@@ -1,0 +1,16 @@
+integer 10 14
+
+14 10 14
+10 00 10
+14 10 14
+
+g(x)
+h(x)
+f(x) = h(x) + g(x)
+
+first of all calculate all neighbord
+except the neighbord which are obstacle
+second calculte all neighbord of the lowest f(x)
+
+update g(x) value
+shorter path
