@@ -7,6 +7,9 @@
 -refactor the code (especialy the squarecolor code) X
 -change the surfaceType name to a more meaningfull name
 -change the colorSquareonclick function to have only call to other function
--fix the problem of the algo founding a way when it's in the corners even with obstacle
+-fix the problem of the algo founding a way when it's in the corners even with obstacle X
 -make the algo find the best way (by updating the distances)
--making the same with obstacle (3 last steps)
+-making the same with obstacle (3 last steps) X
+-Finished X
+***********************************************************************************
+-Bonus: Color the shortest path with a different color than the other tryed path.

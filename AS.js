@@ -116,10 +116,10 @@ function colorSelectedSquareOnClick() {
         getDistanceX();
         surfaces.push([squares.lastSquare.x, squares.lastSquare.y, "normal"]);
         // colorSquare(squares.lastSquare.x, squares.lastSquare.y, "black");
-        // console.log(surfaces);
-        console.log("***********************************************************");
-        // console.log("Distance to the start " + getDistanceToStart(surfaces[0]));
-        // console.log("Distance to the end " + getDistanceToEnd(surfaces[0]));
+        // //console.log(surfaces);
+        //console.log("***********************************************************");
+        // //console.log("Distance to the start " + getDistanceToStart(surfaces[0]));
+        // //console.log("Distance to the end " + getDistanceToEnd(surfaces[0]));
         //colorIntermediary();
         colorPath();
         findPath();
@@ -260,10 +260,10 @@ function colorPath() {
     for (var i = 0; i < surfaces.length; i++) {
         if (surfaces[i][2] == "intermediary") {
             colorSquare(surfaces[i][0], surfaces[i][1]);
-            // console.log(i);
-            // console.log("Distance to the start " + getDistanceToStart(surfaces[i]));
-            // console.log("Distance to the end " + getDistanceToEnd(surfaces[i]));
-            // console.log("Distance Total " + getDistanceTotal(surfaces[i]));
+            // //console.log(i);
+            // //console.log("Distance to the start " + getDistanceToStart(surfaces[i]));
+            // //console.log("Distance to the end " + getDistanceToEnd(surfaces[i]));
+            // //console.log("Distance Total " + getDistanceTotal(surfaces[i]));
         }
     }
 }
@@ -283,56 +283,56 @@ function findPath() {
     while ((actualSquare.x != squares.currentSquare.x 
         || actualSquare.y != squares.currentSquare.y)
         && t < 200) {
-        console.log("Actual square:");
-        console.log(actualSquare);
-        console.log("Squares Current square:");
-        console.log(squares.currentSquare);
-        console.log(actualSquare == squares.currentSquare);
+        //console.log("Actual square:");
+        //console.log(actualSquare);
+        //console.log("Squares Current square:");
+        //console.log(squares.currentSquare);
+        //console.log(actualSquare == squares.currentSquare);
         
-        console.log("****************Touring*****************" + t + "**************");
+        //console.log("****************Touring*****************" + t + "**************");
         // for (var i = 0; i < squareList.length; i++) {
         //     // distanceList.push(getDistanceTotal(squareList[i]));
         //     distanceList.push(getDistanceToEnd(squareList[i]));
         // }
-        // console.log(getMinIndex(distanceList));
-        // console.log(squareList[getMinIndex(distanceList)][0]);
+        // //console.log(getMinIndex(distanceList));
+        // //console.log(squareList[getMinIndex(distanceList)][0]);
         if (t != 0) {
             surfaces.push([actualSquare.x, actualSquare.y, "intermediary"]);
         }
-        console.log(getMinIndex(squareList));
+        //console.log(getMinIndex(squareList));
         actualSquare.x = squareList[getMinIndex(squareList)][0];
         actualSquare.y = squareList[getMinIndex(squareList)][1];
         visitedSquareList.push([actualSquare.x, actualSquare.y]);
-        console.log("sqaurelist");
-        console.log(squareList);
-        console.log("actual square");
-        console.log(actualSquare);
-        console.log(squareList);
-        console.log("splice");
+        //console.log("sqaurelist");
+        //console.log(squareList);
+        //console.log("actual square");
+        //console.log(actualSquare);
+        //console.log(squareList);
+        //console.log("splice");
         squareList.splice(getMinIndex(squareList), 1);
         if (squares.currentSquare.x === actualSquare.x &&
             squares.currentSquare.y === actualSquare.y) {
-            console.log("yaayayaay c'est bon");
+            //console.log("yaayayaay c'est bon");
             break;
         }
-        // console.log(distanceList);
-        console.log(squareList);
-        // console.log(actualSquare);
-        // console.log(squares.currentSquare);
+        // //console.log(distanceList);
+        //console.log(squareList);
+        // //console.log(actualSquare);
+        // //console.log(squares.currentSquare);
         // var distanceList = [];
-        // console.log(updateSquareList(squareList, getNeighbord(actualSquare)));
+        // //console.log(updateSquareList(squareList, getNeighbord(actualSquare)));
         squareList = updateSquareList(squareList, getNeighbord(actualSquare), visitedSquareList);
         // squareList = getNeighbord(actualSquare);
         t++;
     }
 
     // for (var i = 0; i < squareList.length; i++) {
-    //     console.log("Square " + squareList[i]);
-    //     console.log("Distance Total " + getDistanceTotal(squareList[i]));
+    //     //console.log("Square " + squareList[i]);
+    //     //console.log("Distance Total " + getDistanceTotal(squareList[i]));
     //     distanceList.push(getDistanceTotal(squareList[i]));
     // }
-    // console.log("min : " + getMin(distanceList));
-    // console.log("index : " + getMinIndex(distanceList));
+    // //console.log("min : " + getMin(distanceList));
+    // //console.log("index : " + getMinIndex(distanceList));
 
 }
 
@@ -389,15 +389,15 @@ function getNeighbord(s) {
 }
 
 function updateSquareList(squareList, listToMerge, visitedSquareList) {
-    // console.log("+++++++++++++++");
-    // console.log(squareList);
-    // console.log(listToMerge);
+    // //console.log("+++++++++++++++");
+    // //console.log(squareList);
+    // //console.log(listToMerge);
     for (let index = 0; index < listToMerge.length; index++) {
         for (let k = 0; k < visitedSquareList.length; k++) {
             if (listToMerge[index][0] == visitedSquareList[k][0] && listToMerge[index][1] == visitedSquareList[k][1]) {
-                console.log("foundddd");
-                console.log(listToMerge);
-                console.log(visitedSquareList);
+                //console.log("foundddd");
+                //console.log(listToMerge);
+                //console.log(visitedSquareList);
                 
                 foundInVisited = 1;
                 break;
@@ -406,20 +406,20 @@ function updateSquareList(squareList, listToMerge, visitedSquareList) {
         if (foundInVisited == 0) {
             for (let j = 0; j < squareList.length; j++) {
                 if (listToMerge[index][0] == squareList[j][0] && listToMerge[index][1] == squareList[j][1]) {
-                    // console.log("//////////");
+                    // //console.log("//////////");
                     break;
                     // squareList.push(listToMerge[index]);
                 }
                 if (j == (squareList.length - 1)) {
-                    // console.log("------------------");
+                    // //console.log("------------------");
                     squareList.push(listToMerge[index]);
                 }
             }
         }
         foundInVisited = 0;
     }
-    // console.log("++++++***+++++++++");
-    // console.log(squareList);
+    // //console.log("++++++***+++++++++");
+    // //console.log(squareList);
     return squareList;
 }
 
