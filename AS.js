@@ -276,9 +276,19 @@ function findPath() {
         y: squares.lastSquare.y
     }
     var squareList = getNeighbord(sc);
+    var visitedSquareList = [[x= squares.lastSquare.x,
+        y= squares.lastSquare.y]];
     // var distanceList = [];
     t = 0;
-    while (actualSquare != squares.currentSquare && t < 20) {
+    while ((actualSquare.x != squares.currentSquare.x 
+        || actualSquare.y != squares.currentSquare.y)
+        && t < 200) {
+        console.log("Actual square:");
+        console.log(actualSquare);
+        console.log("Squares Current square:");
+        console.log(squares.currentSquare);
+        console.log(actualSquare == squares.currentSquare);
+        
         console.log("****************Touring*****************" + t + "**************");
         // for (var i = 0; i < squareList.length; i++) {
         //     // distanceList.push(getDistanceTotal(squareList[i]));
@@ -292,17 +302,27 @@ function findPath() {
         console.log(getMinIndex(squareList));
         actualSquare.x = squareList[getMinIndex(squareList)][0];
         actualSquare.y = squareList[getMinIndex(squareList)][1];
+        visitedSquareList.push([actualSquare.x, actualSquare.y]);
+        console.log("sqaurelist");
+        console.log(squareList);
+        console.log("actual square");
+        console.log(actualSquare);
+        console.log(squareList);
+        console.log("splice");
+        squareList.splice(getMinIndex(squareList), 1);
         if (squares.currentSquare.x === actualSquare.x &&
             squares.currentSquare.y === actualSquare.y) {
             console.log("yaayayaay c'est bon");
             break;
         }
-        console.log(distanceList);
+        // console.log(distanceList);
         console.log(squareList);
         // console.log(actualSquare);
         // console.log(squares.currentSquare);
-        var distanceList = [];
-        var squareList = getNeighbord(actualSquare);
+        // var distanceList = [];
+        // console.log(updateSquareList(squareList, getNeighbord(actualSquare)));
+        squareList = updateSquareList(squareList, getNeighbord(actualSquare), visitedSquareList);
+        // squareList = getNeighbord(actualSquare);
         t++;
     }
 
@@ -368,6 +388,41 @@ function getNeighbord(s) {
     return (squareList);
 }
 
+function updateSquareList(squareList, listToMerge, visitedSquareList) {
+    // console.log("+++++++++++++++");
+    // console.log(squareList);
+    // console.log(listToMerge);
+    for (let index = 0; index < listToMerge.length; index++) {
+        for (let k = 0; k < visitedSquareList.length; k++) {
+            if (listToMerge[index][0] == visitedSquareList[k][0] && listToMerge[index][1] == visitedSquareList[k][1]) {
+                console.log("foundddd");
+                console.log(listToMerge);
+                console.log(visitedSquareList);
+                
+                foundInVisited = 1;
+                break;
+            }
+        }
+        if (foundInVisited == 0) {
+            for (let j = 0; j < squareList.length; j++) {
+                if (listToMerge[index][0] == squareList[j][0] && listToMerge[index][1] == squareList[j][1]) {
+                    // console.log("//////////");
+                    break;
+                    // squareList.push(listToMerge[index]);
+                }
+                if (j == (squareList.length - 1)) {
+                    // console.log("------------------");
+                    squareList.push(listToMerge[index]);
+                }
+            }
+        }
+        foundInVisited = 0;
+    }
+    // console.log("++++++***+++++++++");
+    // console.log(squareList);
+    return squareList;
+}
+
 function getAllInfo(squareList) {
     for (var i = 0; i < squareList.length; i++) {
         squareList[i].push(getDistanceToStart(squareList[i]));
@@ -388,7 +443,7 @@ function isSurfaceAnObstacle(x, y) {
 }
 
 function isInsideTheGrid(x, y) {
-    if ((x >= 0 && x <= 19) && (y >= 0 && y <= 19)) {
+    if ((x >= 0 && x <= 19) && (y >= 0 && y <= 9)) {
         return true;
     }
     return false;

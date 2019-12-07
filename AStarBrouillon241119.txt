@@ -1,0 +1,17 @@
+// update occurs when you
+// go to a cell and take his neighbors
+// add a distance to the cells
+// then when you get to another cell
+// which have the same neighbors
+// you can update the distance value of this cells
+
+
+
+
+
+// check squares neighbord and their total distance 
+// if it is not an obstacle
+// go to the smallest total distance neighbord
+// update the distance value of every node
+// if all have higer value than the other node from the first he go back to the first
+// until he reach the endpoint
